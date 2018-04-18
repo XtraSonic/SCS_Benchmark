@@ -40,7 +40,7 @@ public class IntegerTestingUnit implements TestUnit{
     public static final int NOT_TEST = testNames.indexOf("NOT Test");
     public static final int ARITHMETIC_TEST = testNames.indexOf("Arithmetic Test");
     
-    private int dataSize = 50000000;
+    private int dataSize = 500000000;
     private int data[];
     
     
