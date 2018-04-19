@@ -8,7 +8,11 @@ package benchmark;
 import Model.TestingUnits.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -16,8 +20,8 @@ import java.util.List;
  */
 public class Benchmark {
     
-    private int NUMBER_OF_RUNS = 1000;
-    private int NUMBER_OF_FILTERED_ELEMENTS = 3;
+    private static int NUMBER_OF_RUNS = 1000;
+    private static int NUMBER_OF_OUTLIERS = 3;
     private List<TestUnit> units;
 
     public Benchmark(List<TestUnit> units)
@@ -38,14 +42,16 @@ public class Benchmark {
 
     public List<Long> runTestUnit(TestUnit tu)
     {
-        size = tu.getNumberOfTests();
+        int size = tu.getNumberOfTests();
+        Map<String,Long> results = new HashMap<>();
         for (int i = 0; i < size; i++)
         {
-
-            runTest(tu, i);
+            String name = tu.getTestName(i);
+            long time = runTest(tu, i);
+            results.put(name, time);
         }
         
-        return times;
+        return null;
     }
 
     public long runTest(TestUnit tu, int test_number)
@@ -60,16 +66,62 @@ public class Benchmark {
             stop = System.nanoTime();
             times.add(stop - start);
         }
-        Collection
+        reduceOutliers(times);
+        
+        double avg_time=0;
+        for(Long time: times)
+        {
+            avg_time+= (double)time/NUMBER_OF_RUNS;
+        }
+        return (long)avg_time;
     }
     
+    
+
+    private void reduceOutliers(List<Long> times)
+    {
+        times.sort((Long o1, Long o2) -> o1.compareTo(o2));
+        for(int i =0;i<NUMBER_OF_OUTLIERS;i++)
+        {
+            times.remove(times.size()-1);
+            times.remove(0);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        IntegerTestingUnit itu = new IntegerTestingUnit();
+        ArrayList<Long> dirNo = new ArrayList<>();
+        long a = 1;
+    dirNo.add(a);
+    a=12;
+    dirNo.add(a);
+    a=22;
+    dirNo.add(a);
+    a=28;
+    dirNo.add(a);
+    a=26;
+    dirNo.add(a);
+    a=24;
+    dirNo.add(a);
+    a=22;
+    dirNo.add(a);
+    a=112;
+    dirNo.add(a);
+    a=12;
+    dirNo.add(a);
+    a=22;
+    dirNo.add(a);
+    a=20;
+    dirNo.add(a);
+    a=10;
+
+        Benchmark b =new Benchmark(null);
+        b.reduceOutliers(dirNo);
+        System.out.println(dirNo.toString());
+        //IntegerTestingUnit itu = new IntegerTestingUnit();
 
     }
-
 }
