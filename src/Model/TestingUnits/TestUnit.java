@@ -14,6 +14,6 @@ import java.time.Duration;
 public interface TestUnit {
     public int getNumberOfTests();
     public String getTestName(int testNumber); 
-    public void run(int testNumber);
+    public int run(int testNumber);
     public long getRefferenceTime(int testNumber);
 }

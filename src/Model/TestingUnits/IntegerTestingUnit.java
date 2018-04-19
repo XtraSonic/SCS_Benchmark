@@ -20,14 +20,14 @@ public class IntegerTestingUnit implements TestUnit{
                                                         "Addition Test",
                                                         "Subtraction Test",
                                                         "Multiplication Test",
-                                                         "Division Test",
-                                                         "Left Shift Test",
-                                                         "Right Shift Test",
-                                                         "AND Test",
-                                                         "OR Test",
-                                                         "XOR Test",
-                                                         "NOT Test",
-                                                         "Arithmetic Test"));
+                                                        "Division Test",
+                                                        "Left Shift Test",
+                                                        "Right Shift Test",
+                                                        "AND Test",
+                                                        "OR Test",
+                                                        "XOR Test",
+                                                        "NOT Test",
+                                                        "Arithmetic Test"));
     public static final int ADDITION_TEST = testNames.indexOf("Addition Test");
     public static final int SUBTRACTION_TEST  = testNames.indexOf("Subtraction Test");
     public static final int MULTIPLICATION_TEST  = testNames.indexOf("Multiplication Test");
@@ -40,9 +40,9 @@ public class IntegerTestingUnit implements TestUnit{
     public static final int NOT_TEST = testNames.indexOf("NOT Test");
     public static final int ARITHMETIC_TEST = testNames.indexOf("Arithmetic Test");
     
-    private int dataSize = 500000000;
+    private int dataSize = 5000000;
     private int data[];
-    
+    private int reductionFactor = 1;
     
     public IntegerTestingUnit()
     {
@@ -70,47 +70,49 @@ public class IntegerTestingUnit implements TestUnit{
     
     
     @Override
-    public void run(int testNumber)
+    public int run(int testNumber)
     {
+        int res;
         switch(testNumber)
         {
             case 0:
-                stressAddition();
+                res = stressAddition();
                 break;
                 
             case 1:
-                stressSubtraction();
+                res = stressSubtraction();
                 break;
             case 2:
-                stressMultiplication();
+                res = stressMultiplication();
                 break;
             case 3:
-                stressDivision();
+                res = stressDivision();
                 break;
             case 4:
-                stressLeftShift();
+                res = stressLeftShift();
                 break;
             case 5:
-                stressRightShift();
+                res = stressRightShift();
                 break;
             case 6:
-                stressAND();
+                res = stressAND();
                 break;
             case 7:
-                stressOR();
+                res = stressOR();
                 break;
             case 8:
-                stressXOR();
+                res = stressXOR();
                 break;
             case 9:
-                stressNOT();
+                res = stressNOT();
                 break;
             case 10:
-                stressArithmetic();
+                res = stressArithmetic();
                 break;
             default:
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
+        return res;
     }
 
     @Override
@@ -135,99 +137,112 @@ public class IntegerTestingUnit implements TestUnit{
         return testNames.get(testNumber);
     }
 
-    private void stressAddition()
+    private int stressAddition()
     {
         int acc=0;
         for(int i =0; i<dataSize;i++)
         {
             acc+=data[i];
         }
+        return acc;
     }
     
-    private void stressSubtraction()
+    private int stressSubtraction()
     {
         int acc=0;
         for(int i =0; i<dataSize;i++)
         {
             acc-=data[i];
         }
+        return acc;
     }
     
-    private void stressMultiplication()
+    private int stressMultiplication()
     {
         int acc=1;
         for(int i =0; i<dataSize;i++)
         {
             acc*=data[i];
         }
+        return acc;
     }
     
-    private void stressDivision()
+    private int stressDivision()
     {
         int acc=Integer.MAX_VALUE;
-        for(int i =0; i<dataSize;i++)
+        int reducedDataSize = dataSize/reductionFactor;
+        for(int i =0; i<reducedDataSize;i++)
         {
             acc/=data[i];
         }
+        return acc;
     }
     
-    private void stressRightShift()
+    private int stressRightShift()
     {
         int acc=0;
         for(int i =0; i<dataSize;i++)
         {
             acc+=data[i]>>1;
         }
+        return acc;
     }
-    private void stressLeftShift()
+    private int stressLeftShift()
     {
         int acc=0;
         for(int i =0; i<dataSize;i++)
         {
             acc+=data[i]<<1;
         }
+        return acc;
     }
-    private void stressAND()
+    private int stressAND()
     {
         int acc=0;
         for(int i =1; i<dataSize;i++)
         {
             acc+=data[i-1]&data[i];
         }
+        return acc;
     }
-    private void stressOR()
+    private int stressOR()
     {
         int acc=0;
         for(int i =1; i<dataSize;i++)
         {
             acc+=data[i-1]|data[i];
         }
+        return acc;
     }
-    private void stressXOR()
+    private int stressXOR()
     {
         int acc=0;
         for(int i =1; i<dataSize;i++)
         {
             acc+=data[i-1]^data[i];
         }
+        return acc;
     }
     
-    private void stressNOT()
+    private int stressNOT()
     {
         int acc=0;
         for(int i =0; i<dataSize;i++)
         {
             acc+=~data[i];
         }
+        return acc;
     }
 
-    private void stressArithmetic()
+    private int stressArithmetic()
     {
         int acc=0;
-        for(int i =0; i<dataSize-3;i++)
+        int reducedDataSize = dataSize/reductionFactor-3;
+        for(int i =0; i<reducedDataSize;i++)
         {
             acc+=data[i]*data[i+1]-data[i+2]/data[i+3];
         }
+        return acc;
     }
     
     

@@ -13,16 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author XtraSonic
  */
 public class Benchmark {
-    
+
     private static int NUMBER_OF_RUNS = 1000;
-    private static int NUMBER_OF_OUTLIERS = 3;
+    private static int NUMBER_OF_OUTLIERS = 200;
     private List<TestUnit> units;
+    private boolean log = true;
 
     public Benchmark(List<TestUnit> units)
     {
@@ -35,23 +37,29 @@ public class Benchmark {
         units.stream()
                 .forEach(testUnit ->
                 {
-                    runTestUnit(testUnit);
+                    System.out.println(runTestUnit(testUnit));
+                    System.out.println();
                 });
 
     }
 
-    public List<Long> runTestUnit(TestUnit tu)
+    public Map<String, Long> runTestUnit(TestUnit tu)
     {
         int size = tu.getNumberOfTests();
-        Map<String,Long> results = new HashMap<>();
+        Map<String, Long> results = new HashMap<>();
         for (int i = 0; i < size; i++)
         {
+            if (log)
+            {
+                System.out.println("Running test " + tu.getTestName(i));
+            }
+
             String name = tu.getTestName(i);
             long time = runTest(tu, i);
             results.put(name, time);
         }
-        
-        return null;
+
+        return results;
     }
 
     public long runTest(TestUnit tu, int test_number)
@@ -59,33 +67,56 @@ public class Benchmark {
         long start, stop;
         int size;
         List<Long> times = new ArrayList<>();
-        for(int i = 0; i<NUMBER_OF_RUNS; i++)
+        for (int i = 0; i < NUMBER_OF_RUNS; i++)
         {
+
+            if (log)
+            {
+      //          System.out.println("\titeration " + i);
+            }
             start = System.nanoTime();
-            tu.run(i);
+            tu.run(test_number);
             stop = System.nanoTime();
             times.add(stop - start);
         }
-        reduceOutliers(times);
-        
-        double avg_time=0;
-        for(Long time: times)
+        if (log)
         {
-            avg_time+= (double)time/NUMBER_OF_RUNS;
+            System.out.println();
+            System.out.println(times);
         }
-        return (long)avg_time;
-    }
-    
-    
-
-    private void reduceOutliers(List<Long> times)
-    {
-        times.sort((Long o1, Long o2) -> o1.compareTo(o2));
-        for(int i =0;i<NUMBER_OF_OUTLIERS;i++)
+        times = reduceOutliers(times);
+        if (log)
         {
-            times.remove(times.size()-1);
+            System.out.println(times);
+            System.out.println();
+            System.out.println();
+        }
+
+        double avg_time = 0;
+        int numberOfTimes = times.size();
+        for (Long time : times)
+        {
+            avg_time += (double) time / numberOfTimes;
+        }
+        if (log)
+        {
+            System.out.println(avg_time);
+            System.out.println();
+            System.out.println();
+        }
+        return (long) avg_time;
+    }
+
+    private List<Long> reduceOutliers(List<Long> times)
+    {
+        //times = times.stream().filter(time->{return time!=0;}).collect(Collectors.toList());
+        times.sort((Long o1, Long o2) -> o2.compareTo(o1));
+        for (int i = 0; i < NUMBER_OF_OUTLIERS; i++)
+        {
+            times.remove(times.size() - 1);
             times.remove(0);
         }
+        return times;
     }
 
     /**
@@ -93,35 +124,11 @@ public class Benchmark {
      */
     public static void main(String[] args)
     {
-        ArrayList<Long> dirNo = new ArrayList<>();
-        long a = 1;
-    dirNo.add(a);
-    a=12;
-    dirNo.add(a);
-    a=22;
-    dirNo.add(a);
-    a=28;
-    dirNo.add(a);
-    a=26;
-    dirNo.add(a);
-    a=24;
-    dirNo.add(a);
-    a=22;
-    dirNo.add(a);
-    a=112;
-    dirNo.add(a);
-    a=12;
-    dirNo.add(a);
-    a=22;
-    dirNo.add(a);
-    a=20;
-    dirNo.add(a);
-    a=10;
+        List<TestUnit> list = new ArrayList<>();
+        list.add(new IntegerTestingUnit(1));
 
-        Benchmark b =new Benchmark(null);
-        b.reduceOutliers(dirNo);
-        System.out.println(dirNo.toString());
-        //IntegerTestingUnit itu = new IntegerTestingUnit();
+        Benchmark b = new Benchmark(list);
+        b.runAllTestsUnits();
 
     }
 }
