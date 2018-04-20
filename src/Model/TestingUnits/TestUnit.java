@@ -5,15 +5,17 @@
  */
 package Model.TestingUnits;
 
-import java.time.Duration;
-
 /**
  *
  * @author XtraSonic
  */
 public interface TestUnit {
+
     public int getNumberOfTests();
-    public String getTestName(int testNumber); 
+
+    public String getTestName(int testNumber);
+
     public int run(int testNumber);
+
     public long getRefferenceTime(int testNumber);
 }

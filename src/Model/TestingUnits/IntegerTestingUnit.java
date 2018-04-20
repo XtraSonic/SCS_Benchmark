@@ -14,23 +14,23 @@ import java.util.Random;
  *
  * @author XtraSonic
  */
-public class IntegerTestingUnit implements TestUnit{
+public class IntegerTestingUnit implements TestUnit {
 
-    private static final List<String> testNames= new ArrayList(Arrays.asList(
-                                                        "Addition Test",
-                                                        "Subtraction Test",
-                                                        "Multiplication Test",
-                                                        "Division Test",
-                                                        "Left Shift Test",
-                                                        "Right Shift Test",
-                                                        "AND Test",
-                                                        "OR Test",
-                                                        "XOR Test",
-                                                        "NOT Test",
-                                                        "Arithmetic Test"));
+    private static final List<String> testNames = new ArrayList(Arrays.asList(
+            "Addition Test",
+            "Subtraction Test",
+            "Multiplication Test",
+            "Division Test",
+            "Left Shift Test",
+            "Right Shift Test",
+            "AND Test",
+            "OR Test",
+            "XOR Test",
+            "NOT Test",
+            "Arithmetic Test"));
     public static final int ADDITION_TEST = testNames.indexOf("Addition Test");
-    public static final int SUBTRACTION_TEST  = testNames.indexOf("Subtraction Test");
-    public static final int MULTIPLICATION_TEST  = testNames.indexOf("Multiplication Test");
+    public static final int SUBTRACTION_TEST = testNames.indexOf("Subtraction Test");
+    public static final int MULTIPLICATION_TEST = testNames.indexOf("Multiplication Test");
     public static final int DIVISION_TEST = testNames.indexOf("Division Test");
     public static final int LEFT_SHIFT_TEST = testNames.indexOf("Left Shift Test");
     public static final int RIGHT_SHIFT_TEST = testNames.indexOf("Right Shift Test");
@@ -39,46 +39,45 @@ public class IntegerTestingUnit implements TestUnit{
     public static final int XOR_TEST = testNames.indexOf("XOR Test");
     public static final int NOT_TEST = testNames.indexOf("NOT Test");
     public static final int ARITHMETIC_TEST = testNames.indexOf("Arithmetic Test");
-    
+
     private int dataSize = 5000000;
     private int data[];
     private int reductionFactor = 1;
-    
+
     public IntegerTestingUnit()
     {
         this(new Random());
     }
-    
+
     public IntegerTestingUnit(long seed)
     {
         this(new Random(seed));
     }
-    
+
     private IntegerTestingUnit(Random generator)
     {
         int a;
         data = new int[dataSize];
-        for(int i =0;i<dataSize;i++)
+        for (int i = 0; i < dataSize; i++)
         {
             do
-            {a=generator.nextInt();            
-            }while(a == 0);
-            data[i]=a;
+            {
+                a = generator.nextInt();
+            } while (a == 0);
+            data[i] = a;
         }
     }
-    
-    
-    
+
     @Override
     public int run(int testNumber)
     {
         int res;
-        switch(testNumber)
+        switch (testNumber)
         {
             case 0:
                 res = stressAddition();
                 break;
-                
+
             case 1:
                 res = stressSubtraction();
                 break;
@@ -118,7 +117,7 @@ public class IntegerTestingUnit implements TestUnit{
     @Override
     public long getRefferenceTime(int testNumber)
     {
-        switch(testNumber)
+        switch (testNumber)
         {
             default:
                 return 0;//TODO set time after Benchmark is built and my PC can get the refference time
@@ -139,112 +138,115 @@ public class IntegerTestingUnit implements TestUnit{
 
     private int stressAddition()
     {
-        int acc=0;
-        for(int i =0; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc+=data[i];
+            acc += data[i];
         }
         return acc;
     }
-    
+
     private int stressSubtraction()
     {
-        int acc=0;
-        for(int i =0; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc-=data[i];
+            acc -= data[i];
         }
         return acc;
     }
-    
+
     private int stressMultiplication()
     {
-        int acc=1;
-        for(int i =0; i<dataSize;i++)
+        int acc = 1;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc*=data[i];
+            acc *= data[i];
         }
         return acc;
     }
-    
+
     private int stressDivision()
     {
-        int acc=Integer.MAX_VALUE;
-        int reducedDataSize = dataSize/reductionFactor;
-        for(int i =0; i<reducedDataSize;i++)
+        int acc = Integer.MAX_VALUE;
+        int reducedDataSize = dataSize / reductionFactor;
+        for (int i = 0; i < reducedDataSize; i++)
         {
-            acc/=data[i];
+            acc /= data[i];
         }
         return acc;
     }
-    
+
     private int stressRightShift()
     {
-        int acc=0;
-        for(int i =0; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc+=data[i]>>1;
+            acc += data[i] >> 1;
         }
         return acc;
     }
+
     private int stressLeftShift()
     {
-        int acc=0;
-        for(int i =0; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc+=data[i]<<1;
+            acc += data[i] << 1;
         }
         return acc;
     }
+
     private int stressAND()
     {
-        int acc=0;
-        for(int i =1; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 1; i < dataSize; i++)
         {
-            acc+=data[i-1]&data[i];
+            acc += data[i - 1] & data[i];
         }
         return acc;
     }
+
     private int stressOR()
     {
-        int acc=0;
-        for(int i =1; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 1; i < dataSize; i++)
         {
-            acc+=data[i-1]|data[i];
+            acc += data[i - 1] | data[i];
         }
         return acc;
     }
+
     private int stressXOR()
     {
-        int acc=0;
-        for(int i =1; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 1; i < dataSize; i++)
         {
-            acc+=data[i-1]^data[i];
+            acc += data[i - 1] ^ data[i];
         }
         return acc;
     }
-    
+
     private int stressNOT()
     {
-        int acc=0;
-        for(int i =0; i<dataSize;i++)
+        int acc = 0;
+        for (int i = 0; i < dataSize; i++)
         {
-            acc+=~data[i];
+            acc += ~data[i];
         }
         return acc;
     }
 
     private int stressArithmetic()
     {
-        int acc=0;
-        int reducedDataSize = dataSize/reductionFactor-3;
-        for(int i =0; i<reducedDataSize;i++)
+        int acc = 0;
+        int reducedDataSize = dataSize / reductionFactor - 3;
+        for (int i = 0; i < reducedDataSize; i++)
         {
-            acc+=data[i]*data[i+1]-data[i+2]/data[i+3];
+            acc += data[i] * data[i + 1] - data[i + 2] / data[i + 3];
         }
         return acc;
     }
-    
     
     
 }

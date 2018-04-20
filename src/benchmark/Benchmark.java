@@ -7,13 +7,9 @@ package benchmark;
 
 import Model.TestingUnits.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -25,6 +21,7 @@ public class Benchmark {
     private static int NUMBER_OF_OUTLIERS = 200;
     private List<TestUnit> units;
     private boolean log = true;
+    private boolean detailedLog = false;
 
     public Benchmark(List<TestUnit> units)
     {
@@ -70,9 +67,9 @@ public class Benchmark {
         for (int i = 0; i < NUMBER_OF_RUNS; i++)
         {
 
-            if (log)
+            if (log && detailedLog)
             {
-      //          System.out.println("\titeration " + i);
+                System.out.println("\titeration " + i);
             }
             start = System.nanoTime();
             tu.run(test_number);
@@ -125,8 +122,10 @@ public class Benchmark {
     public static void main(String[] args)
     {
         List<TestUnit> list = new ArrayList<>();
-        list.add(new IntegerTestingUnit(1));
-
+       // list.add(new IntegerTestingUnit(1));
+       //list.add(new FloatingPointTestingUnit());
+       list.add(new PrimeNumberTestUnit());
+       
         Benchmark b = new Benchmark(list);
         b.runAllTestsUnits();
 
