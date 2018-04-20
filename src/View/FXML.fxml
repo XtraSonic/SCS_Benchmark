@@ -15,9 +15,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="View.FXMLController">
+<AnchorPane id="AnchorPane" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FXMLController">
     <stylesheets>
         <URL value="@fxml.css" />
     </stylesheets>
@@ -46,35 +47,36 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="integerProgressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button alignment="CENTER" mnemonicParsing="false" text="Run SingleTest" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="runIntegerTestButton" minWidth="75.0" text="Floating Point Test" GridPane.rowIndex="2">
+                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <ProgressBar fx:id="integerTestsProgressBar" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="integerIterationsProgressBar" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="runIntegerTestButton" alignment="CENTER" mnemonicParsing="false" text="Run SingleTest" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label minWidth="75.0" text="Floating Point Test" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="floatingPointProgressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Button fx:id="runFloatingPointTestButton" mnemonicParsing="false" text="Run SingleTest" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Label minWidth="75.0" text="Prime Numbers Test" GridPane.rowIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="primeProgressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button fx:id="runPrimeTestButton" mnemonicParsing="false" text="Run SingleTest" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <Label minWidth="75.0" text="String Test" GridPane.rowIndex="4">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="stringProgressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Button fx:id="runStringTestButton" mnemonicParsing="false" text="Run SingleTest" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                   <Label minWidth="75.0" text="User Test" GridPane.rowIndex="6">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ProgressBar fx:id="userProgressBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <Button fx:id="runUserTestButton" mnemonicParsing="false" text="Run User Test" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                   <HBox alignment="CENTER" GridPane.columnSpan="3">
                      <children>
@@ -87,6 +89,30 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <ProgressBar fx:id="floatingPointTestsProgressBar" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="floatingPointIterationsProgressBar" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <ProgressBar fx:id="primeTestsProgressBar" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="primeIterationsProgressBar" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <ProgressBar fx:id="stringTestsProgressBar" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="stringIterationsProgressBar" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <children>
+                        <ProgressBar fx:id="userTestsProgressBar" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="userIterationsProgressBar" prefWidth="200.0" progress="0.0" />
+                     </children>
+                  </VBox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

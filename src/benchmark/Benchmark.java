@@ -10,50 +10,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  *
  * @author XtraSonic
  */
-public class Benchmark {
+public class Benchmark extends Observable implements Runnable {
 
     private static int NUMBER_OF_RUNS = 1000;
     private static int NUMBER_OF_OUTLIERS = 200;
-    private List<TestUnit> units;
+    private TestUnit unit;
     private boolean log = true;
     private boolean detailedLog = false;
+    private Double iterationProgress;
+    private Double testNumberProgress;
+    private List<Double> updateArgs = new ArrayList<>();
 
-    public Benchmark(List<TestUnit> units)
+    public Benchmark(TestUnit units)
     {
-        this.units = units;
+        this.unit = units;
+        testNumberProgress=0.;
+        iterationProgress=0.;
+        updateArgs.add(testNumberProgress);
+        updateArgs.add(iterationProgress);
 
     }
 
-    public void runAllTestsUnits()
+    public Map<String, Long> runTestUnit()
     {
-        units.stream()
-                .forEach(testUnit ->
-                {
-                    System.out.println(runTestUnit(testUnit));
-                    System.out.println();
-                });
-
-    }
-
-    public Map<String, Long> runTestUnit(TestUnit tu)
-    {
-        int size = tu.getNumberOfTests();
+        int size = unit.getNumberOfTests();
         Map<String, Long> results = new HashMap<>();
+        testNumberProgress = 0.;
         for (int i = 0; i < size; i++)
         {
             if (log)
             {
-                System.out.println("Running test " + tu.getTestName(i));
+                System.out.println("Running test " + unit.getTestName(i));
             }
 
-            String name = tu.getTestName(i);
-            long time = runTest(tu, i);
+            String name = unit.getTestName(i);
+            long time = runTest(unit, i);
             results.put(name, time);
+            testNumberProgress = (i + 1.) / size;
+            updateArgs.set(0, testNumberProgress);
+            setChanged();
+            notifyObservers(updateArgs);
         }
 
         return results;
@@ -64,6 +66,7 @@ public class Benchmark {
         long start, stop;
         int size;
         List<Long> times = new ArrayList<>();
+        iterationProgress = 0.;
         for (int i = 0; i < NUMBER_OF_RUNS; i++)
         {
 
@@ -75,6 +78,10 @@ public class Benchmark {
             tu.run(test_number);
             stop = System.nanoTime();
             times.add(stop - start);
+            iterationProgress = (i + 1.) / NUMBER_OF_RUNS;
+            updateArgs.set(1, iterationProgress);
+            setChanged();
+            notifyObservers(updateArgs);
         }
         if (log)
         {
@@ -122,12 +129,23 @@ public class Benchmark {
     public static void main(String[] args)
     {
         List<TestUnit> list = new ArrayList<>();
-       // list.add(new IntegerTestingUnit(1));
-       //list.add(new FloatingPointTestingUnit());
-       list.add(new PrimeNumberTestUnit());
-       
-        Benchmark b = new Benchmark(list);
-        b.runAllTestsUnits();
+        // list.add(new IntegerTestingUnit(1));
+        //list.add(new FloatingPointTestingUnit());
+//       list.add(new PrimeNumberTestUnit());
+//       
+//        Benchmark b = new Benchmark(list);
+//        b.runAllTestsUnits();
 
+    }
+
+    @Override
+    public void run()
+    {
+        runTestUnit();
+    }
+
+    public Double getProgress()
+    {
+        return iterationProgress;
     }
 }
