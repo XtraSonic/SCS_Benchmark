@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Benchmark extends Observable implements Runnable {
     private static int NUMBER_OF_RUNS = 1000;
     private static int NUMBER_OF_OUTLIERS = 200;
     private TestUnit unit;
-    private boolean log = true;
+    private boolean log = false;
     private boolean detailedLog = false;
     private Double iterationProgress;
     private Double testNumberProgress;
@@ -30,8 +31,8 @@ public class Benchmark extends Observable implements Runnable {
     public Benchmark(TestUnit units)
     {
         this.unit = units;
-        testNumberProgress=0.;
-        iterationProgress=0.;
+        testNumberProgress = 0.;
+        iterationProgress = 0.;
         updateArgs.add(testNumberProgress);
         updateArgs.add(iterationProgress);
 
@@ -141,11 +142,25 @@ public class Benchmark extends Observable implements Runnable {
     @Override
     public void run()
     {
-        runTestUnit();
+        Map<String, Long> m=runTestUnit();
+        System.out.println(m);
+        System.out.println(getScore(m));
+
     }
 
     public Double getProgress()
     {
         return iterationProgress;
+    }
+
+    private Map<String,Integer> getScore(Map<String, Long> runTestUnit)
+    {
+        return runTestUnit.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                e -> e.getKey(),
+                e -> (int)(Math.round(10000*(double)e.getValue()/unit.getRefferenceTime(e.getKey()))/100)
+        ));
+    
     }
 }

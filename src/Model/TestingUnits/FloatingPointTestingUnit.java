@@ -85,8 +85,9 @@ public class FloatingPointTestingUnit implements TestUnit {
     }
 
     @Override
-    public long getRefferenceTime(int testNumber)
+    public long getRefferenceTime(String testName)
     {
+        int testNumber = testNames.indexOf(testName);
         switch (testNumber)
         {
             default:

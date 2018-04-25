@@ -48,7 +48,7 @@ public class PrimeNumberTestUnit implements TestUnit {
     }
 
     @Override
-    public long getRefferenceTime(int testNumber)
+    public long getRefferenceTime(String testName)
     {
         return 0;//TODO set time after Benchmark is built and my PC can get the refference time
     }

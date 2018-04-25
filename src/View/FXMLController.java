@@ -7,6 +7,8 @@ package View;
 
 import Model.TestingUnits.FloatingPointTestingUnit;
 import Model.TestingUnits.IntegerTestingUnit;
+import Model.TestingUnits.PrimeNumberTestUnit;
+import Model.TestingUnits.StringSortingTestingUnit;
 import benchmark.Benchmark;
 import java.net.URL;
 import java.util.ArrayList;
@@ -57,33 +59,33 @@ public class FXMLController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb)
     {
         List<Benchmark> benchmarks = new ArrayList<>();
-        
-        Benchmark b = new Benchmark(new IntegerTestingUnit());
-        MyProgressBar mpb = new MyProgressBar(integerTestsProgressBar, integerIterationsProgressBar);
-        b.addObserver(mpb);
-        runIntegerTestButton.setOnAction(e ->
-        {
-            Thread t=new Thread(b);
-            t.start();
-        });
-        benchmarks.add(b);
-        
-        Benchmark b2 = new Benchmark(new FloatingPointTestingUnit());
-        MyProgressBar mpb2 = new MyProgressBar(floatingPointTestsProgressBar,floatingPointIterationsProgressBar);
-        b2.addObserver(mpb2);
-        runFloatingPointTestButton.setOnAction(e2 ->
-        {
-            Thread t2=new Thread(b2);
-            t2.start();
-        });
-        benchmarks.add(b2);
+        benchmarks.add(new Benchmark(new IntegerTestingUnit()));
+        benchmarks.add(new Benchmark(new FloatingPointTestingUnit()));
+        benchmarks.add(new Benchmark(new PrimeNumberTestUnit()));
+        benchmarks.add(new Benchmark(new StringSortingTestingUnit()));
+
+        setBenchmark(benchmarks.get(0), integerTestsProgressBar, integerIterationsProgressBar, runIntegerTestButton);
+        setBenchmark(benchmarks.get(1), floatingPointTestsProgressBar, floatingPointIterationsProgressBar, runFloatingPointTestButton);
+        setBenchmark(benchmarks.get(2), primeTestsProgressBar, primeIterationsProgressBar, runPrimeTestButton);
+        setBenchmark(benchmarks.get(3), stringTestsProgressBar, stringIterationsProgressBar, runStringTestButton);
     }
 
     @Override
     public void update(Observable o, Object o1)
     {
-        
+
         System.out.println("asgasdf");
+    }
+
+    private void setBenchmark(Benchmark b, ProgressBar integerTestsProgressBar, ProgressBar integerIterationsProgressBar, Button runIntegerTestButton)
+    {
+        MyProgressBar mpb = new MyProgressBar(integerTestsProgressBar, integerIterationsProgressBar);
+        b.addObserver(mpb);
+        runIntegerTestButton.setOnAction(e ->
+        {
+            Thread t = new Thread(b);
+            t.start();
+        });
     }
 
 }
