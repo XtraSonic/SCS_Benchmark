@@ -13,11 +13,11 @@ import static java.lang.Math.sqrt;
  */
 public class PrimeNumberTestUnit implements TestUnit {
 
-    public static final String TEST_NAME="Prime Numbers Test";
-    
+    public static final String TEST_NAME = "Prime Numbers Test";
+
     private int numberOfPrimesToFind = 20000;
-    private boolean log=true;
-    
+    private boolean log = true;
+
     @Override
     public int getNumberOfTests()
     {
@@ -34,15 +34,15 @@ public class PrimeNumberTestUnit implements TestUnit {
     public int run(int testNumber)
     {
         int count = 1;
-        int i=3;
-        while(count<numberOfPrimesToFind)
+        int i = 3;
+        while (count < numberOfPrimesToFind)
         {
-            if(isPrime(i))
+            if (isPrime(i))
             {
                 count++;
                 //System.out.println(count);
             }
-            i+=2;
+            i += 2;
         }
         return 0;
     }
@@ -50,16 +50,30 @@ public class PrimeNumberTestUnit implements TestUnit {
     @Override
     public long getRefferenceTime(String testName)
     {
-        return 0;//TODO set time after Benchmark is built and my PC can get the refference time
+        return 63091360;
     }
 
     private boolean isPrime(int number)
     {
         int limit = (int) sqrt(number);
-        for(int i=2;i<limit;i ++)
-            if(number % i==0)
+        for (int i = 2; i < limit; i++)
+        {
+            if (number % i == 0)
+            {
                 return false;
+            }
+        }
         return true;
+    }
+
+    @Override
+    public int calculateScore(String testName, long value)
+    {
+        if (this.getRefferenceTime(testName) == 0)
+        {
+            return -1;
+        }
+        return (int) (Math.round(10000 * (double) this.getRefferenceTime(testName) / value) / 100);
     }
 
 }

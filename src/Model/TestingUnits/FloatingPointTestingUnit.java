@@ -90,8 +90,24 @@ public class FloatingPointTestingUnit implements TestUnit {
         int testNumber = testNames.indexOf(testName);
         switch (testNumber)
         {
+            case 0:
+                //res = stressAddition();
+                return 7614633;
+
+            case 1:
+               // res = stressSubtraction();
+                return 7594728;
+            case 2:
+              //  res = stressMultiplication();
+                return 7561622;
+            case 3:
+               // res = stressDivision();
+                return 13967428;
+            case 4:
+               // res = stressArithmetic();
+                return 50972041;
             default:
-                return 0;//TODO set time after Benchmark is built and my PC can get the refference time
+                return 0;
         }
     }
 
@@ -157,6 +173,16 @@ public class FloatingPointTestingUnit implements TestUnit {
             acc += data[i] * data[i + 1] - data[i + 2] / data[i + 3];
         }
         return acc;
+    }
+
+    @Override
+    public int calculateScore(String testName, long value)
+    {
+        if (this.getRefferenceTime(testName) == 0)
+        {
+            return -1;
+        }
+        return (int) (Math.round(10000 * (double) this.getRefferenceTime(testName) / value) / 100);
     }
 
 }

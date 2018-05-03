@@ -122,6 +122,39 @@ public class IntegerTestingUnit implements TestUnit {
         {
 
             case 0:
+                //res = stressAddition();
+                return 4418772;
+            case 1:
+                //res = stressSubtraction();
+                return 4363695;
+            case 2:
+                //res = stressMultiplication();
+                return 6592370;
+            case 3:
+                //res = stressDivision();
+                return 34930879;
+            case 4:
+                //res = stressLeftShift();
+                return 4038948;
+            case 5:
+                //res = stressRightShift();
+                return 4042274;
+            case 6:
+                //res = stressAND();
+                return 4966478;
+            case 7:
+                //res = stressOR();
+                return 4968015;
+            case 8:
+                //res = stressXOR();
+                return 5069055;
+            case 9:
+                //res = stressNOT();
+                return 4999300;
+            case 10:
+                //res = stressArithmetic();
+                return 60526041;
+            /*case 0:
                 return 4499835;
             case 1:
                 return 4456779;
@@ -142,7 +175,7 @@ public class IntegerTestingUnit implements TestUnit {
             case 9:
                 return 5060338;
             case 10:
-                return 61297273;
+                return 61297273;*/
             default:
                 System.err.println("No such test");
                 return -1;
@@ -271,6 +304,16 @@ public class IntegerTestingUnit implements TestUnit {
             acc += data[i] * data[i + 1] - data[i + 2] / data[i + 3];
         }
         return acc;
+    }
+
+    @Override
+    public int calculateScore(String testName, long value)
+    {
+        if (this.getRefferenceTime(testName) == 0)
+        {
+            return -1;
+        }
+        return (int) (Math.round(10000 * (double) this.getRefferenceTime(testName) / value) / 100);
     }
 
 }

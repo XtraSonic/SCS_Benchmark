@@ -18,4 +18,6 @@ public interface TestUnit {
     public int run(int testNumber);
 
     public long getRefferenceTime(String testName);
+
+    public int calculateScore(String testName, long value);
 }

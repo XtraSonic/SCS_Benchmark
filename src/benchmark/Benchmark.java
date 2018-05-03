@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,8 @@ public class Benchmark extends Observable implements Runnable {
     private Double testNumberProgress;
     private List<Double> updateArgs = new ArrayList<>();
 
+    private Map<String, Long> testTimes = new HashMap<>();
+
     public Benchmark(TestUnit units)
     {
         this.unit = units;
@@ -35,6 +38,7 @@ public class Benchmark extends Observable implements Runnable {
         iterationProgress = 0.;
         updateArgs.add(testNumberProgress);
         updateArgs.add(iterationProgress);
+        updateArgs.add(0.);
 
     }
 
@@ -58,7 +62,7 @@ public class Benchmark extends Observable implements Runnable {
             setChanged();
             notifyObservers(updateArgs);
         }
-
+        testTimes = results;
         return results;
     }
 
@@ -124,27 +128,20 @@ public class Benchmark extends Observable implements Runnable {
         return times;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
-    {
-        List<TestUnit> list = new ArrayList<>();
-        // list.add(new IntegerTestingUnit(1));
-        //list.add(new FloatingPointTestingUnit());
-//       list.add(new PrimeNumberTestUnit());
-//       
-//        Benchmark b = new Benchmark(list);
-//        b.runAllTestsUnits();
-
-    }
-
     @Override
     public void run()
     {
-        Map<String, Long> m=runTestUnit();
-        System.out.println(m);
-        System.out.println(getScore(m));
+        updateArgs.set(0, 0.);
+        updateArgs.set(1, 0.);
+        updateArgs.set(2, 0.);
+        setChanged();
+        notifyObservers(updateArgs);
+        runTestUnit();
+        System.out.println(testTimes);
+        System.out.println(getScore());
+        updateArgs.set(2, 1.);
+        setChanged();
+        notifyObservers(updateArgs);
 
     }
 
@@ -153,14 +150,33 @@ public class Benchmark extends Observable implements Runnable {
         return iterationProgress;
     }
 
-    private Map<String,Integer> getScore(Map<String, Long> runTestUnit)
+    public Map<String, Integer> getScore()
     {
-        return runTestUnit.entrySet()
+
+        return testTimes.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                e -> e.getKey(),
-                e -> (int)(Math.round(10000*(double)e.getValue()/unit.getRefferenceTime(e.getKey()))/100)
-        ));
-    
+                        e -> e.getKey(),
+                        e -> unit.calculateScore(e.getKey(), e.getValue())
+                //(int)(Math.round(10000*(double)e.getValue()/unit.getRefferenceTime(e.getKey()))/100)
+                ));
+
     }
+
+    public long getOverallScore()
+    {
+        double result = 1;
+        double power = 1. / testTimes.size();
+        Map<String, Integer> scores = getScore();
+        System.out.println(scores);
+        Integer value = null;
+        for (Entry e : scores.entrySet())
+        {
+            value = (Integer) e.getValue();
+            result *= Math.pow(value.doubleValue(), power);
+            //System.out.println("res: " + result + ' ' + Math.pow(value.doubleValue(), power));
+        }
+        return (long) result;
+    }
+
 }
