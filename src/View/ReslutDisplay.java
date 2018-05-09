@@ -13,6 +13,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
@@ -22,14 +23,14 @@ import javafx.scene.control.ProgressBar;
  *
  * @author XtraSonic
  */
-class ReslutDisplay extends Observable implements Observer {
+class ReslutDisplay implements Observer {
 
-    private LineChart chart;
+    private BarChart chart;
     private XYChart.Series series;
     private final Benchmark b;
     private final Label score;
 
-    public ReslutDisplay(LineChart chart, XYChart.Series series, Benchmark b, Label score)
+    public ReslutDisplay(BarChart chart, XYChart.Series series, Benchmark b, Label score)
     {
         this.chart = chart;
         this.series = series;
@@ -46,7 +47,7 @@ class ReslutDisplay extends Observable implements Observer {
         {
             return;
         }
-        Map<String, Integer> results = b.getScore();
+        Map<String, Long> results = b.getTestTimes();
         System.out.println("Chart updating");
         System.out.println("Chart: " + results.toString());
         results.entrySet().stream().forEach(entity ->
@@ -54,6 +55,7 @@ class ReslutDisplay extends Observable implements Observer {
             Platform.runLater(() ->
             {
                 series.getData().add(new XYChart.Data<>(entity.getKey(), entity.getValue()));
+                
             });
             //chart.getData().addAll(series);
 
@@ -64,8 +66,6 @@ class ReslutDisplay extends Observable implements Observer {
             score.setText(s.toString());
         });
 
-        setChanged();
-         notifyObservers();
         
     }
 

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class Benchmark extends Observable implements Runnable {
 
     private static int NUMBER_OF_RUNS = 1000;
-    private static int NUMBER_OF_OUTLIERS = 200;
+    private static int PERCENTAGE_OF_OUTLIERS = 20;
     private TestUnit unit;
     private boolean log = false;
     private boolean detailedLog = false;
@@ -118,9 +118,9 @@ public class Benchmark extends Observable implements Runnable {
 
     private List<Long> reduceOutliers(List<Long> times)
     {
-        //times = times.stream().filter(time->{return time!=0;}).collect(Collectors.toList());
+        int numberOfOutliers = times.size()*PERCENTAGE_OF_OUTLIERS/200;
         times.sort((Long o1, Long o2) -> o2.compareTo(o1));
-        for (int i = 0; i < NUMBER_OF_OUTLIERS; i++)
+        for (int i = 0; i < numberOfOutliers; i++)
         {
             times.remove(times.size() - 1);
             times.remove(0);
@@ -161,6 +161,11 @@ public class Benchmark extends Observable implements Runnable {
                 //(int)(Math.round(10000*(double)e.getValue()/unit.getRefferenceTime(e.getKey()))/100)
                 ));
 
+    }
+
+    public Map<String, Long> getTestTimes()
+    {
+        return testTimes;
     }
 
     public long getOverallScore()
