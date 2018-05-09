@@ -156,7 +156,7 @@
             </GridPane>
          </left>
          <center>
-            <BarChart fx:id="resultChart" animated="false" minHeight="700.0" minWidth="700.0" title="Results" BorderPane.alignment="CENTER">
+            <BarChart fx:id="resultChart" animated="false" minHeight="800.0" minWidth="1200.0" title="Results" BorderPane.alignment="CENTER">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>

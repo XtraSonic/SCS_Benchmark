@@ -66,6 +66,18 @@ public class Benchmark extends Observable implements Runnable {
         return results;
     }
 
+    public List<String> getNames()
+    {
+        int size = unit.getNumberOfTests();
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < size; i++)
+        {
+            String name = unit.getTestName(i);
+            res.add(name);
+        }
+        return res;
+    }
+    
     public long runTest(TestUnit tu, int test_number)
     {
         long start, stop;

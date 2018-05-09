@@ -77,7 +77,7 @@ public class FXMLController implements Initializable {
 
         //resultChart.setAnimated(true);
         resultChart.getData().add(series);
-        resultChart.getYAxis().setLabel("Time");
+        resultChart.getYAxis().setLabel("Time (nanoseconds)");
         List<Benchmark> benchmarks = new ArrayList<>();
         benchmarks.add(new Benchmark(new IntegerTestingUnit(seed)));
         benchmarks.add(new Benchmark(new FloatingPointTestingUnit(seed)));
