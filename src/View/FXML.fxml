@@ -30,7 +30,7 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="240.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -144,9 +144,14 @@
                         <Label fx:id="stringScore" text="0" />
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                     <children>
+                        <Label minWidth="240.0" text="Score= Sum(partial_scores) / NumberTests" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
                      <children>
-                        <Label text="Score= Time/RefferenceTime" />
+                        <Label minWidth="240.0" text="Partial_score= Time/Refference_time" />
                      </children>
                   </HBox>
                </children>
