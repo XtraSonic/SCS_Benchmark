@@ -63,6 +63,9 @@ public class FXMLController implements Initializable {
 
     private int seed = 37841;
     private XYChart.Series<String, Integer> series = new XYChart.Series<>();
+    private boolean all = false;
+    private int count = 0;
+    List<Benchmark> benchmarks = new ArrayList<>();
     //private List<XYChart.Series> seriesList;
 
     /**
@@ -78,7 +81,6 @@ public class FXMLController implements Initializable {
         //resultChart.setAnimated(true);
         resultChart.getData().add(series);
         resultChart.getYAxis().setLabel("Time (nanoseconds)");
-        List<Benchmark> benchmarks = new ArrayList<>();
         benchmarks.add(new Benchmark(new IntegerTestingUnit(seed)));
         benchmarks.add(new Benchmark(new FloatingPointTestingUnit(seed)));
         benchmarks.add(new Benchmark(new PrimeNumberTestUnit()));
@@ -106,11 +108,16 @@ public class FXMLController implements Initializable {
 
         runAllTestButton.setOnAction(e ->
         {
+            count = 0;
+            all = true;
+            Thread t = new Thread(benchmarks.get(count));
+            t.start();
+            /*
             for (Benchmark b : benchmarks)
             {
                 Thread t = new Thread(b);
                 t.start();
-            }
+            }*/
         });
     }
 
@@ -133,7 +140,9 @@ public class FXMLController implements Initializable {
         
         score.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) ->
         {
+            
             updateOverallScore();
+            checkContinuation();
         });
     }
 
@@ -151,5 +160,22 @@ public class FXMLController implements Initializable {
         {
             overallScore.setText(stringResult);
         });
+    }
+
+    private void checkContinuation()
+    {
+        //System.out.println("C = "+all +" "+ count);
+        if(!all)
+            return;
+        if(benchmarks.size() > ++count)
+        {
+            Thread t = new Thread(benchmarks.get(count));
+            t.start();
+        }
+        else
+        {
+            all = false;
+        }
+        
     }
 }

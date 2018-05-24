@@ -154,28 +154,6 @@ public class IntegerTestingUnit implements TestUnit {
             case 10:
                 //res = stressArithmetic();
                 return 60526041;
-            /*case 0:
-                return 4499835;
-            case 1:
-                return 4456779;
-            case 2:
-                return 6617342;
-            case 3:
-                return 35173178;
-            case 4:
-                return 4240571;
-            case 5:
-                return 4230207;
-            case 6:
-                return 4770522;
-            case 7:
-                return 4774407;
-            case 8:
-                return 5150759;
-            case 9:
-                return 5060338;
-            case 10:
-                return 61297273;*/
             default:
                 System.err.println("No such test");
                 return -1;
